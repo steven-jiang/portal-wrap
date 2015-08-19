@@ -1,0 +1,32 @@
+ext {
+	springVersion = "4.2.0.RELEASE"
+	aspectjVersion="1.8.1"
+}
+
+allprojects {
+    group = 'com.kii.extension.wrap'
+    version '1.0-SNAPSHOT'
+
+	apply plugin: 'java'
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		jcenter()
+	}
+
+
+	dependencies {
+
+		compile group:"org.springframework",name:"spring-beans",version:"${springVersion}"
+		compile group:"org.springframework",name:"spring-context",version:"${springVersion}"
+
+		compile group:"org.springframework",name:"spring-context-support",version:"${springVersion}"
+
+		testCompile group:"org.springframework",name:"spring-test",version:"${springVersion}"
+		testCompile 'junit:junit:4.12'
+
+	}
+}
+
+

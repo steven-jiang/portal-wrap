@@ -1,0 +1,11 @@
+dependencies{
+
+	compile project(':user-manager')
+	compile project(':appinfo-store')
+
+	compile group:"org.springframework",name:"spring-webmvc",version:"${springVersion}"
+	compile group:"javax.servlet",name:"servlet-api",version:"3.+"
+
+	testCompile group:"org.springframework",name:"spring-test",version:"${springVersion}"
+
+}
