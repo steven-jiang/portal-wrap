@@ -49,7 +49,7 @@ public class AppInfo implements Serializable{
 
 	@JsonIgnore
 	public String getSiteUrl(String subUrl) {
-		return site.getSiteUrl()+"/api/"+"/apps/"+appID+"/"+subUrl;
+		return site.getSiteUrl()+"/api/apps/"+appID+"/"+subUrl;
 	}
 
 

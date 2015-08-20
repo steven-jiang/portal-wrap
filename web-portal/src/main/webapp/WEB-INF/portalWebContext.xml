@@ -12,12 +12,13 @@
     <import resource="classpath:com/kii/extension/portal/portalContext.xml" />
 
 
-    <context:component-scan base-package="com.kii.javaExtension.portal.web">
+    <context:component-scan base-package="com.kii.extension.portal.web">
 
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller" />
 
     </context:component-scan>
 
+    <mvc:annotation-driven />
 
 </beans>

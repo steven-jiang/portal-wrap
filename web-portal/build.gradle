@@ -4,8 +4,14 @@ dependencies{
 	compile project(':appinfo-store')
 
 	compile group:"org.springframework",name:"spring-webmvc",version:"${springVersion}"
-	compile group:"javax.servlet",name:"servlet-api",version:"3.+"
+	runtime group:"javax.servlet",name:"servlet-api",version:"3.+"
 
 	testCompile group:"org.springframework",name:"spring-test",version:"${springVersion}"
 
+	testRuntime 'org.eclipse.jetty:jetty-server:9.3.2.v20150730'
+	testRuntime 'org.eclipse.jetty:jetty-webapp:9.3.2.v20150730'
+
 }
+
+apply plugin: 'war'
+apply plugin: 'jetty'

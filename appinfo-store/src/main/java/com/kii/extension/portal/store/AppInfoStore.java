@@ -84,10 +84,10 @@ public class AppInfoStore {
 
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
-					throw new AppStoreException(e);
+					throw new AppStoreException(e,"read app info error");
 				}
 			}catch(IOException|GeneralSecurityException e){
-				throw new AppStoreException(e);
+				throw new AppStoreException(e,"operate pwd error");
 			}
 		}
 
@@ -137,7 +137,7 @@ public class AppInfoStore {
 
 
 		List<String[]>  arrays=appInfos.getAppInfoMap().entrySet().stream()
-				.map(entry->new String[]{entry.getKey(),entry.getValue().getAppID()})
+				.map(entry -> new String[]{entry.getKey(), entry.getValue().getAppID()})
 				.collect(Collectors.toCollection(ArrayList<String[]>::new));
 
 		List<Map<String,String>> list=new ArrayList<>();
@@ -186,8 +186,7 @@ public class AppInfoStore {
 				file.createNewFile();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new AppStoreException(e);
+			throw new AppStoreException(e,"create app info store fail");
 		}
 
 		byte[] bytes = getByteArrayOutputStream();
@@ -200,8 +199,10 @@ public class AppInfoStore {
 
 			objInput.write(result);
 
-		}catch(Exception e){
-			throw new AppStoreException(e);
+		} catch (GeneralSecurityException e) {
+			throw new AppStoreException(e,"secret the app info fail");
+		} catch (IOException e) {
+			throw new AppStoreException(e,"save app info fail");
 		}
 	}
 
@@ -212,7 +213,7 @@ public class AppInfoStore {
 			stream.writeObject(appInfos);
 			return bytes.toByteArray();
 		}catch(IOException e){
-			throw new AppStoreException(e);
+			throw new AppStoreException(e,"write to app store error");
 		}
 	}
 
@@ -228,14 +229,12 @@ public class AppInfoStore {
 			cipher.init(mode, key);
 
 			return cipher;
-		}catch(Exception e){
-			throw new AppStoreException(e);
+		}catch (GeneralSecurityException e) {
+			throw new AppStoreException(e,"security error");
 		}
 	}
 
 	private  Key createSecretKey(String accessPwd)  {
-
-		try {
 
 			String serect=accessPwd+"$"+accessPwd;
 
@@ -246,9 +245,6 @@ public class AppInfoStore {
 
 			return new SecretKeySpec(random, "AES");
 
-		}catch(Exception e){
-			throw new AppStoreException(e);
-		}
 	}
 
 	public AppInfo getAppInfo(String alias){

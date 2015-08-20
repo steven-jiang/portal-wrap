@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Component;
 
+import com.kii.extension.portal.entity.ErrorCode;
 import com.kii.extension.portal.store.AppInfoStore;
 import com.kii.extension.portal.store.AppStoreBind;
 import com.kii.extension.portal.web.PortalWebException;
@@ -70,13 +71,13 @@ public class TokenManager {
 
 		TokenInfo info=tokenMap.get(token);
 		if(info==null||!info.verify()){
-			return null;
+			throw new PortalWebException(ErrorCode.INVALID_TOKEN);
 		}
 
 		String userName=info.name;
 
 		if(userName==null||!userName.equals(store.getAdminName())){
-			throw new PortalWebException();
+			throw new PortalWebException(ErrorCode.INVALID_TOKEN);
 		}
 
 
@@ -93,12 +94,12 @@ public class TokenManager {
 	}
 
 
-	private Map<String,LoginInfo> adminTokenMap=new HashMap<>();
+	private Map<String,LoginInfo> adminTokenMap=new ConcurrentHashMap<>();
 
 	public String getAdminToken(String alias){
 
 
-		return adminTokenMap.getOrDefault(alias,login(alias)).getToken();
+		return adminTokenMap.computeIfAbsent(alias,k->login(k)).getToken();
 
 	}
 

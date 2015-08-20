@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.kii.extension.portal.entity.ErrorCode;
 import com.kii.extension.portal.entity.LoginParam;
 import com.kii.extension.portal.service.TokenManager;
 import com.kii.extension.portal.store.AppInfoStore;
@@ -49,7 +50,7 @@ public class LoginController {
 
 			if(sign==false){
 
-				throw  new PortalWebException();
+				throw  new PortalWebException(ErrorCode.LOGIN_FAIL);
 			}else{
 
 				String token=tokenManager.getNewToken(name);
@@ -71,7 +72,7 @@ public class LoginController {
 			}
 
 		} catch (IOException e) {
-			throw  new PortalWebException();
+			throw  new PortalWebException(ErrorCode.IO_EXCEPTION);
 		}
 
 

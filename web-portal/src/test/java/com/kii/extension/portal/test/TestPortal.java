@@ -63,8 +63,8 @@ public class TestPortal {
 
 
 		String result= mockMvc.perform(post("/oauth2/token")
-				.header("X-Kii-AppID", "foo")
-				.header("X-Kii-AppKey", "bar")
+				.header("x-kii-appid", "foo")
+				.header("x-kii-appkey", "bar")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(param)))
 				.andReturn().getResponse().getContentAsString();
@@ -100,8 +100,8 @@ public class TestPortal {
 
 
 		String queryResult=mockMvc.perform(get("/apps/foo")
-				.header("X-Kii-AppID","foo")
-				.header("X-Kii-AppKey", "bar")
+				.header("x-kii-appid","foo")
+				.header("x-kii-appkey", "bar")
 				.header("Authorization", "Bearer " + token)
 				.contentType(MediaType.APPLICATION_JSON)
 				)

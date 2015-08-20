@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.kii.extension.portal.entity.ErrorCode;
 import com.kii.extension.portal.service.TokenManager;
 import com.kii.extension.portal.store.AppInfoStore;
+import com.kii.extension.portal.store.AppStoreException;
 import com.kii.extension.sdk.entity.AppInfo;
 
 @Controller
@@ -59,7 +61,9 @@ public class AdminController {
 			}
 
 		} catch (IOException e) {
-			throw new PortalWebException(e);
+			throw new PortalWebException(e, ErrorCode.JSON_FORMAT_ERROR);
+		}catch(AppStoreException ex){
+			throw new PortalWebException(ex);
 		}
 
 		ResponseEntity resp=new ResponseEntity(HttpStatus.OK);
@@ -75,14 +79,16 @@ public class AdminController {
 
 
 		try {
-			tokenManager.verifyToken(header);
+//			tokenManager.verifyToken(header);
 
 			AppInfo info=mapper.readValue(body, AppInfo.class);
 
 			service.addAppInfo(alias,info);
 
 		} catch (IOException e) {
-			throw new PortalWebException(e);
+			throw new PortalWebException(e,ErrorCode.JSON_FORMAT_ERROR);
+		}catch(AppStoreException ex){
+			throw new PortalWebException(ex);
 		}
 
 		ResponseEntity resp=new ResponseEntity(HttpStatus.OK);
@@ -121,7 +127,9 @@ public class AdminController {
 			return resp;
 
 		} catch (JsonProcessingException e) {
-			throw new PortalWebException(e);
+			throw new PortalWebException(e,ErrorCode.JSON_FORMAT_ERROR);
+		}catch(AppStoreException ex){
+			throw new PortalWebException(ex);
 		}
 
 
