@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<!-- script src="../jquery-1.11.1.min.js" ></script  -->
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.js"></script>
+
+<script src="KiiSDK.js"  ></script>
+<script src="yankandemo.js" ></script>
+<script src="sites.js" ></script>
+<script src="mock.js" ></script>
+<script>
+
+var userName="oldoldwatch@sina.com";
+
+var userPwd="qwerty";
+
+var appInfo=siteInfo["local"];
+var context=new Context(appInfo.app_id,appInfo.app_key,appInfo.url,appInfo.clientID,appInfo.secret,function(){});
+
+//context.remote="foo";
+
+</script>
+
+<script src="tools.js" ></script>
+
+<script>
+
+function addThing(){
+	//78B3B90FFEF1
+	
+	context.setUserLogin(userName,userPwd);
+	var thingID=$("#thingID").val();
+		
+	var newThing={};
+		
+	newThing["_id"]=thingID;
+	newThing["MAC"]=thingID;
+	newThing["model"]="YK15-MS";
+
+	context.fireBucketTrigger("onLampAdded",newThing,"lights");
+}
+
+function fireThing(){
+	context.setUserLogin(userName,userPwd);
+	
+	var thingID=$("#thingID").val();
+	var pwd=$("#pwd").val();
+	
+	var action={};
+	action["state"]=0;
+	action["color"]=6488319;
+	action["brightness"]=44;
+	action["CT"]=70;
+	
+	var lights={};
+	//lights["abc"]=pwd;
+	lights[thingID]=pwd;
+	
+	context.fireFun("fireLamp",{"lights":lights,"action":action});
+	
+}
+
+
+function sendUpgrade(){
+
+    var thingID=$("#thingID").val();
+
+	context.setUserLogin(userName,userPwd);
+
+	var pwd=$("#pwd").val();
+
+    var lights={};
+    lights[thingID]=pwd;
+
+    var action={"url":"www.kii.com/foo","version":"1.2.3b" };
+
+    context.fireFun("upgradeLamp",{"lights":lights,"action":action});
+
+
+}
+
+
+function statusQuery(){
+
+	var thingID=$("#thingID").val();
+	context.setThingLogin(thingID,"123456");
+
+    context.runInThing(function(){
+		var thing=new KiiThing(thingID,Context.done);
+		thing.setToken(context.getAccessToken());
+		var action={};
+		thing.doAction(action,"monitor","queryStatus",function(){
+			console.log("status");
+		});
+	});
+}
+
+function verifyPwd(){
+	context.setUserLogin(userName,userPwd);
+	
+	var thingID=$("#thingID").val();
+	var pwd=$("#pwd").val();
+	
+	var action={};
+	var lights={};
+	lights[thingID]=pwd;
+
+	context.fireFun("fireLamp",{"lights":lights,"action":action,"verify":true});
+	
+}
+function changeRemotePwd(){
+	
+	context.setUserLogin(userName,userPwd);
+	
+	var thingID=$("#thingID").val();
+	// context.setThingLogin(thingID,"123456");
+	var pwd=$("#pwd").val();
+	var newPwd=$("#newPwd").val();	
+	var param={};
+	param["thingID"]=[thingID];
+	param["adminPwd"]=pwd;
+	param["newRemotePwd"]=newPwd;
+	
+	context.fireFun("batchChangeThingPwd",param);
+	
+}
+
+function changeAdminPwd(){
+	
+	context.setUserLogin(userName,userPwd);
+	
+	var thingID=$("#thingID").val();
+	// context.setThingLogin(thingID,"123456");
+	var pwd=$("#pwd").val();
+	var newPwd=$("#newPwd").val();	
+	var param={};
+	param["thingID"]=thingID;
+	param["adminPwd"]=pwd;
+	param["newAdminPwd"]=newPwd;
+	
+	context.fireFun("doChangeThingPwd",param);
+	
+}
+
+
+function fireGeoInfoConvert(){
+
+	//context.setUserLogin(userName,userPwd);
+
+    context.fireFun("onEveryScanIpInfo",{});
+
+}
+
+
+
+function fireActionResp(){
+	
+	var thingID=$("#thingID").val();
+	
+	context.setThingLogin(thingID,"123456");
+		
+	var resp={};
+	
+	resp["state"]=0;
+	resp["color"]=6488319;
+	resp["brightness"]=33;
+	resp["CT"]=70;
+	resp["thingID"]=thingID;
+	// resp["requestID"]="f5f9f910-9c7e-11e4-8ef7-12314307e197";
+	resp["ipAddress"]="115.29.207.129";
+	resp["firmwareVersion"]="1.2.3b";
+	resp["adminPwd"]="12345678";
+	resp["remotePwd"]="1234";
+
+	context.fireFun("doActionResponse",resp);
+}
+
+function sendPwdResp(){
+	
+	var thingID=$("#thingID").val();
+	
+	context.setThingLogin(thingID,"123456");
+		
+	var resp={};
+	var pwd=$("#newPwd").val();
+	resp["password"]=pwd;
+	resp["thingID"]=thingID;
+
+	context.fireFun("doActionResponse",resp);
+}
+
+function resetThing(){
+	
+	context.setUserLogin(userName,userPwd);
+	
+	var thingID=$("#thingID").val();
+	
+	context.fireFun("unbindThing",{"thingID":thingID});
+	
+}
+
+function delThing(){
+	
+	var thingID=$("#thingID").val();
+	
+	context.setThingLogin(thingID,"123456");
+	
+	
+	context.fireFun("removeLamp",{"thingID":thingID});
+	
+}
+
+function getThing(){
+	
+	var thingID=$("#thingID").val();
+	
+	context.setThingLogin(thingID,"123456");
+	
+	
+	context.fireFun("getThingDetail",{"thingID":thingID});
+	
+}
+/*
+
+*/
+function fireDelay(){
+	
+	context.setUserLogin(userName,userPwd);
+	
+	var sch={};
+	
+	sch["name"]="demo";
+	
+	var delay={};
+	delay["minute"]=30;
+	// delay["hour"]=;
+	//delay["day"]=1;
+	delay["currTime"]=new Date().getTime();
+
+	sch["delay"]=delay;
+
+	sch["type"]="things";
+	sch["target"]=["thing202","thing201"];
+	sch["action"]="999";
+	
+	
+	context.fireBucketTrigger("onScheduleAdd",sch,"schedula");
+	
+}
+
+
+function fireCloseAll(){
+	
+	
+	context.setUserLogin(userName,userPwd);
+	
+	var sch={
+  "enabled": 1,
+  "time": 630,
+  "name": "time5",
+  "state": 0,
+  "scene_id": "123",
+  "closeAll":true,
+  "repeat": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "deleted": 0
+}
+
+	context.fireBucketTrigger("onScheduleAdd",sch,"schedules");
+	
+	
+}
+
+function fireSchedula(){
+	
+	context.setUserLogin(userName,userPwd);
+	
+	var sch={
+	  "enabled": 1,
+	  "CT": 70,
+	  "group_id": "1e753f56-20d6-4c0e-8552-6bf20296af8f",
+	  "state": 0,
+	  "scene_id": "",
+	  "repeat": [
+	    false,
+	    false,
+	    false,
+	    false,
+	    false,
+	    false,
+	    false
+	  ],
+	  "deleted": 0,
+	  "mode": 0,
+	  "brightness": 0,
+	  "closeAll": 0,
+	  "timezone": 8,
+	  "time": 671,
+	  "color": -16776961,
+	  "name": "天天",
+	  "light_id": ""
+	}
+/*	var sch={
+  "brightness": 80,
+  "mode":1,
+  "enabled": 1,
+  "time": 630,
+  "color": -16776961,
+  "CT": 70,
+  "name": "time5",
+  "group_id": "abc",
+  "state": 0,
+  "scene_id": "",
+  "repeat": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "deleted": 0
+}  */
+
+	context.fireBucketTrigger("onScheduleAdd",sch,"schedules");
+	
+}
+
+function scanThing(){
+		var time=new Date().getTime();
+		context.fireFun("scanUntouchThing",{"timestamp":time});
+	
+}
+
+
+function triggerInHand(){
+
+    context.fireFun("onEveryMinute");
+
+}
+
+
+function triggerSch(){
+	var date=new Date(2015, 3, 14, 2, 30);
+
+	context.fireFun("fireBySchedula",{"timestamp":date});
+}
+
+////////
+
+
+ function testDel(){
+
+	var thingID=$("#thingID").val();
+
+        context.fireFun("onMsgReceive",{"thingID":thingID,"type":"thingDel","appID":"foo" ,"pwd":"12345678" });
+
+
+ }
+
+ function testAdd(){
+
+   //{"type":"thingAdd","thingID":"thing997","model":"YK15-MS","appID":"06e806e2"}
+   //Response Headersview source
+    var msg={};
+    msg.type="thingAdd";
+
+    	var thingID=$("#thingID").val();
+
+    msg.thingID=thingID;
+    msg.model="YK15-MS";
+    msg.appID="06e806e2";
+
+    context.fireFun("onMsgReceive",msg);
+
+
+ }
+
+ function testUpdate(){
+
+/*
+           msg.geoInfo=geoInfo;
+        msg.firmwareVersion=version;
+
+*/
+   //Response Headersview source
+    var msg={};
+    msg.type="statusUpdate";
+
+    	var thingID=$("#thingID").val();
+
+    msg.thingID=thingID;
+    msg.geoInfo={foo:"bar"};
+    msg.firmwareVersion="1.1.1"
+    msg.appID="06e806e2";
+
+    context.fireFun("onMsgReceive",msg);
+
+
+ }
+
+ function testMove(){
+    var thingID=$("#thingID").val();
+    context.fireFun("migrateLamp",{"thingID":thingID,"pwd":"12345678"});
+
+ }
+
+function runTask(){
+
+    context.fireFun("onDaily",{});
+
+}
+
+
+
+
+</script>
+
+<li><input type="text" id="thingID" />
+<li><label>pwd:<input type="text" id="pwd" /></label>
+<li><input type="button" value="add thing" onclick="addThing()" />
+<li><input type="button" value="unbind thing" onclick="resetThing()" />
+<li><input type="button" value="delete thing" onclick="delThing()" />
+<li><input type="button" value="get thing" onclick="getThing()" />
+<li>
+<li><input type="button" value="fireThing" onclick="fireThing()" /></li>
+	<li><input type="button" value="queryStatus" onclick="statusQuery()" /></li>
+<li><input type="button" value="verifyPwd" onclick="testPwdInBanch()" />
+<li><input type="button" value="fireActionResp"  onclick="fireActionResp()" />
+<li><label>new pwd:<input type="text" id="newPwd" /></label>	
+<li><input type="button" value="changeAdminPwd"  onclick="changeAdminPwd()" />
+<li><input type="button" value="changeRemotePwd"  onclick="changeRemotePwd()" />	
+<li><input type="button" value="sendPwdResp"  onclick="sendPwdResp()" /></li>
+    <li><input type="button" value="upgrade"  onclick="sendUpgrade()" /></li>
+
+<li><label>schedule</label>
+<li><input type="button" value="addSchedule"  onclick="fireSchedula()" />
+<li><input type="button" value="addCloseAll" onclick="fireCloseAll()" />
+<li><input type="button" value="triggerSch"  onclick="triggerSch()" />
+<li><input type="button" value="doInHand"  onclick="triggerInHand()" /></li>
+    <li>ip:115.29.207.129</li>
+<li><label>ipAddress<input type="text" id="ipAddress" /></label></li>
+<li><input type="button" value="addIpInfo" onclick="addIpInfo()" /></li>
+<li><input type="button" value="fireGeoInfoConvert" onclick="fireGeoInfoConvert()" /></li>
+<li><input type="button" value="scanInfo"  onclick="runScan()" /></li>
+    <li><input type="button"  value="scanTask" onclick="runTask()"  /></li>
+    <li><input type="button" value="fireAdd"  onclick="testAdd()" /></li>
+    <li><input type="button" value="fireUpdate"  onclick="testUpdate()" /></li>
+    <li><input type="button" value="move"  onclick="testMove()"  /></li>
+    <li><input type="button" value="doCount"  onclick="doThingObjCount()"  /></li>
