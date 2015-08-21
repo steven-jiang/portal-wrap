@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<head>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.3.js"></script>
+
+    <script>
+
+        var adminToken;
+        var adminName;
+
+
+        function doCall(callback,url,data,type){
+            var ajaxParam={};
+
+            var headers={};
+            headers["accept"]="*/*"
+
+		    if(adminToken!=undefined){
+  	            headers['Authorization'] = "Bearer " + adminToken;
+		    }
+
+		    ajaxParam["headers"]=headers;
+
+        	if(type==undefined){
+		        ajaxParam["type"]="POST";
+            }else{
+                ajaxParam["type"]=type;
+            }
+            ajaxParam["contentType"]="application/json";
+
+		    ajaxParam["success"]=function(anything, textStatus,jqXHR){
+		        if ((200 <= (_ref1 = jqXHR.status) && _ref1 < 400)) {
+                    if(jqXHR.status==204){
+                        return callback(null, textStatus);
+                    }else {
+                        return callback(anything,textStatus);
+                    }
+
+	            }else {
+	                var errString = xhr.status + " : " + _this._path;
+	                console.log("error :"+errString);
+	            }
+		    };
+		    ajaxParam["error"]=function(errString, status){
+		        console.log("kii request failure:"+errString+" \n status:"+status);
+		    };
+
+		    if(data!=undefined){
+			    ajaxParam["data"]=JSON.stringify(data);
+		    }
+
+		    $.ajax("./api/"+url,ajaxParam);
+
+
+        }
+
+
+        function login(){
+
+            var name=$("#admin").val();
+            var pwd=$("#pwd").val();
+
+            var data={};
+            data["client_id"]=name;
+            data["client_secret"]=pwd;
+
+
+            doCall(function(tokenInfo){
+                adminToken=tokenInfo["access_token"];
+                adminName=name;
+                $("#login").hide();
+                $("#info").show();
+            },"oauth2/token",data);
+
+
+        }
+
+        function changePwd(){
+
+            var newPwd1=$("#newPwd1").val();
+            var newPwd2=$("#newPwd2").val();
+
+            var oldPwd=$("#oldPwd").val();
+
+            if(newPwd1!=newPwd2){
+                alert("new password input error");
+                return;
+            }
+
+            var param={};
+            param["oldPassword"]=oldPwd;
+            param["newPassword"]=newPwd1;
+
+            doCall(function(tokenInfo){
+                msg("password change success");
+            },"admin/"+adminName+"/password",param);
+
+        }
+
+        function fillList(){
+
+
+
+            doCall(function(appList){
+               $("#appInfoTable").empty();
+               for(var i in appList){
+                  var obj=appList[i];
+                  var alias=obj["appAlias"];
+                  var id=obj["appID"];
+
+                  var tr=$("<tr></tr>");
+                  tr.append("<td>"+alias+"</td>" );
+                  tr.append("<td>"+id+"</td>");
+
+                  var del=$("<td></td>");
+                  del.attr("onclick","deleteApp("+alias+")" );
+                  del.text("dele");
+                  tr.append(del);
+
+                  $("#appInfoTable").append(tr);
+
+               }
+            },"admin/appInfo",null,"GET");
+
+        }
+
+        function deleteApp(alias){
+
+            doCall(function(){
+                fillList();
+            },"admin/appInfo/"+alias,null,"DELETE");
+
+        }
+
+        function addInfo(){
+
+            var param={};
+            param["appID"]=$("#appID").val();
+            param["appKey"]=$("#appKey").val();
+            param["clientID"]=$("#clientID").val();
+            param["secret"]=$("#secret").val();
+
+            param["site"]=$("#siteSele").selected;
+
+            var alias=$("#appAlias").val();
+
+            doCall(function(){
+                fillList();
+            },"admin/appInfo/"+alias,param,"PUT");
+
+        }
+
+    </script>
+</head>
+<div>
+    <div id="login" >
+    <li><label>admin:<input type="text" id="admin" placeholder="admin"	/></label>
+    <li><label>pwd:<input type="password" id="pwd" /></label>
+    <li><button onclick="login()" >login</button></li>
+    </div>
+    <div id="info">
+        <div id="user">
+            <li><label>old pwd:<input type="password" id="oldPwd" placeholder="input old password"	/></label>
+            <li><label>new pwd:<input type="password" id="newPwd1" placeholder="input new password"/></label>
+            <li><label>new pwd again:<input type="password" id="newPwd2" placeholder="input new password again"/></label>
+            <li><button  onclick="changePwd()" >changePwd</button></li>
+        </div>
+        <div id="appList">
+            <table>
+                <thead>
+                <tr><th>app alias</th><th>app id</th><th>oper</th></tr>
+                </thead>
+                <tbody id="appInfoTable">
+
+                </tbody>
+            </table>
+            <li><button onclick="fillList()" >refresh</button></li>
+        </div>
+        <div id="addInfo">
+            <li><label>appAlias:<input type="text" id="appAlias" placeholder="input appAlias"	/></label>
+            <li><p>========================</p></li>
+            <li><label>appID:<input type="text" id="appID" placeholder="input appID"	value="06e806e2" /></label>
+            <li><label>appKey:<input type="text" id="appKey" placeholder="input appKey" value="31afdcdfd72ade025559176a40a20875" /></label>
+            <li><label>clientID:<input type="text" id="clientID" placeholder="input clientID" value="9a08dd2cf74ef414e6a5ea8033e4a0a4" /></label>
+            <li><label>secret:<input type="text" id="secret" placeholder="input secret"	value="a82f1e144c111e11e4a9d62e93ef8c2a301e3efd6b6b1862ad4dac0a052a2d9e" /></label>
+            <li><label>site select:
+                        <select id="siteSele" placeholder="select site" >
+                            <option value="US">US</option>
+                            <option value="SG">SG</option>
+                            <option value="CN">CN</option>
+                            <option value="JP" selected	 >JP</option>
+                        </select>
+                    </label>
+            <li><button onclick="addInfo()" >add app info</button></li>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+            $("#info").hide();
+</script>
+</html>
