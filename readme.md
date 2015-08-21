@@ -48,3 +48,7 @@ build project
  more detail info:
 https://docs.google.com/document/d/1jf9ZAxQ3w6AxcS2LTU0wZUX5YAU0Z2k7-5oRyP3GEaI/
 (in update)
+
+
+future：
+add power-user manager logic

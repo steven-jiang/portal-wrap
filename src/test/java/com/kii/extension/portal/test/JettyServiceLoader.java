@@ -12,8 +12,8 @@ public class JettyServiceLoader {
 
 		WebAppContext context = new WebAppContext();
 
-		context.setContextPath("/web-portal");
-		String path="./web-portal/src/main/webapp";
+		context.setContextPath("/api-wrap-service");
+		String path="./src/main/webapp";
 		context.setDescriptor(path+"/WEB-INF/web.xml");
 		context.setResourceBase(path);
 		context.setParentLoaderPriority(true);
