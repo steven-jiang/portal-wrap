@@ -2,6 +2,5 @@ rootProject.name = 'api-wrap-service'
 
 include 'user-manager'
 include 'kiicloud-api'
-include 'web-portal'
 include 'appinfo-store'
 

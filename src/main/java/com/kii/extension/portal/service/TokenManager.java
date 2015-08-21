@@ -2,13 +2,11 @@ package com.kii.extension.portal.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Component;
 
 import com.kii.extension.portal.entity.ErrorCode;

@@ -1,7 +1,5 @@
 package com.kii.extension.portal.entity;
 
-import org.springframework.http.HttpStatus;
-
 public enum ErrorCode {
 
 	INVALID_TOKEN("the token invalid",403),

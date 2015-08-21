@@ -1,13 +1,9 @@
 package com.kii.extension.portal.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.parser.ContentModel;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

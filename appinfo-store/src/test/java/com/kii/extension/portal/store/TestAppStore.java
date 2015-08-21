@@ -4,15 +4,18 @@ package com.kii.extension.portal.store;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.http.HttpRequest;
+import java.io.File;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.kii.extension.sdk.entity.SiteType;
 import com.kii.extension.sdk.entity.AppInfo;
+import com.kii.extension.sdk.entity.SiteType;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
@@ -37,8 +40,13 @@ public class TestAppStore {
 	}
 
 
+	@After
+	public void clear(){
+		File file=new File("./yankon.app.data");
+		file.delete();
+	}
 
-	@Test
+	@Before
 	public void initData(){
 		String appID="06e806e2";
 		String appKey="31afdcdfd72ade025559176a40a20875";

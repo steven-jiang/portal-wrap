@@ -1,9 +1,7 @@
 package com.kii.extension.sdk.test;
 
-import org.springframework.stereotype.Component;
-
-import com.kii.extension.sdk.entity.SiteType;
 import com.kii.extension.sdk.entity.AppInfo;
+import com.kii.extension.sdk.entity.SiteType;
 import com.kii.extension.sdk.service.AppBindTool;
 
 //@Component
