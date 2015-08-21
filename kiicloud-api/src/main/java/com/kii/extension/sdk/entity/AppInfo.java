@@ -75,6 +75,12 @@ public class AppInfo implements Serializable{
 		return site;
 	}
 
+	@JsonProperty("site")
+	public void setSiteValue(String site){
+		this.site=SiteType.valueOf(site);
+	}
+
+	@JsonIgnore
 	public void setSite(SiteType site) {
 		this.site = site;
 	}

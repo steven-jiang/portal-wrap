@@ -11,7 +11,7 @@
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="properties">
             <props>
-                <prop key="appInfo.data.path">/Users/steven/IdeaProjects/api-wrap-service/appinfo-store/yankon.app.data</prop>
+                <prop key="appInfo.data.path">.portal-wrap/secret.appInfo.data</prop>
             </props>
         </property>
     </bean>

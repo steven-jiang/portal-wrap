@@ -30,6 +30,7 @@ import com.kii.extension.portal.store.AppStoreException;
 import com.kii.extension.sdk.entity.AppInfo;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
 
@@ -43,7 +44,7 @@ public class AdminController {
 	private TokenManager tokenManager;
 
 
-	@RequestMapping(value="/admin/{adminName}/password",method={RequestMethod.POST})
+	@RequestMapping(value="/{adminName}/password",method={RequestMethod.POST})
 	public ResponseEntity doSetAdminPwd(@RequestHeader("Authorization")  String header,@RequestBody String body,@PathVariable("adminName") String adminName ){
 
 
@@ -56,8 +57,8 @@ public class AdminController {
 
 			String newPwd=map.get("newPassword");
 
-			if(service.verifyUser(name,oldPwd)) {
-				service.setAdminPwd(name, newPwd);
+			if(service.verifyUser(adminName,oldPwd)) {
+				service.setAdminPwd(adminName, newPwd);
 			}
 
 		} catch (IOException e) {
@@ -74,12 +75,11 @@ public class AdminController {
 
 
 
-	@RequestMapping(value="/admin/appInfo/{appAlias}",method={RequestMethod.PUT})
+	@RequestMapping(value="/appInfo/{appAlias}",method={RequestMethod.PUT})
 	public ResponseEntity doSetAppInfo(@RequestHeader("Authorization")  String header,@RequestBody String body,@PathVariable("appAlias") String alias){
 
 
 		try {
-//			tokenManager.verifyToken(header);
 
 			AppInfo info=mapper.readValue(body, AppInfo.class);
 
@@ -99,8 +99,8 @@ public class AdminController {
 	}
 
 
-	@RequestMapping(value="/admin/appInfo/{appAlias}",method={RequestMethod.DELETE})
-	public ResponseEntity doSetAppInfo(@RequestHeader("Authorization")  String header,@PathVariable("appAlias") String alias) {
+	@RequestMapping(value="/appInfo/{appAlias}",method={RequestMethod.DELETE})
+	public ResponseEntity doDeleteAppInfo(@RequestHeader("Authorization")  String header,@PathVariable("appAlias") String alias) {
 		tokenManager.verifyToken(header);
 
 		service.removeAppInfo(alias);
@@ -109,8 +109,8 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value="/admin/appInfo",method={RequestMethod.GET})
-	public ResponseEntity doSetAppInfo(@RequestHeader("Authorization")  String header){
+	@RequestMapping(value="/appInfo",method={RequestMethod.GET})
+	public ResponseEntity doGetAppInfo(@RequestHeader("Authorization")  String header){
 
 
 		tokenManager.verifyToken(header);

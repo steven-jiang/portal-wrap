@@ -45,12 +45,17 @@ public class AppInfoStore {
 
 
 
-	private  String appInfoLocation="./appInfo.data";
+	private static final String fileName="secret.app.data";
+
+
+	private File  appInfoLocation=new File(fileName);
+
+	private String appInfoPath;
 
 	@Value("${appInfo.data.path}")
 	public void setAppInfoLocation(String path){
 
-		this.appInfoLocation=path;
+		this.appInfoPath=path;
 	}
 
 
@@ -65,16 +70,19 @@ public class AppInfoStore {
 
 
 
+
 	@PostConstruct
-	public void init(){
+	public void init() throws IOException {
 
-		File file=new File(appInfoLocation);
 
-		if(file.exists()){
+		appInfoLocation=new File(System.getProperty("user.dir"),appInfoPath);
+
+		if(appInfoLocation.exists()){
+
 			Cipher cipher=getCipher(Cipher.DECRYPT_MODE);
 			try {
 
-				byte[] fileCtx = FileCopyUtils.copyToByteArray(file);
+				byte[] fileCtx = FileCopyUtils.copyToByteArray(appInfoLocation);
 
 				byte[] result = cipher.doFinal(fileCtx);
 
@@ -89,6 +97,11 @@ public class AppInfoStore {
 			}catch(IOException|GeneralSecurityException e){
 				throw new AppStoreException(e,"operate pwd error");
 			}
+		}else{
+			appInfoLocation.getParentFile().mkdirs();
+			appInfoLocation.createNewFile();
+
+			setAdminPwd("admin","123456");
 		}
 
 
@@ -178,22 +191,12 @@ public class AppInfoStore {
 	}
 
 	private void saveAppInfos() {
-		File file =null;
-		try {
-
-			file=new File(appInfoLocation);
-			if(!file.exists()){
-				file.createNewFile();
-			}
-		} catch (IOException e) {
-			throw new AppStoreException(e,"create app info store fail");
-		}
 
 		byte[] bytes = getByteArrayOutputStream();
 
 		Cipher cipher=getCipher(Cipher.ENCRYPT_MODE);
 
-		try(FileOutputStream objInput=new FileOutputStream(file)){
+		try(FileOutputStream objInput=new FileOutputStream(appInfoLocation)){
 
 			byte[] result=cipher.doFinal(bytes);
 
