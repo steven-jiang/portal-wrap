@@ -23,3 +23,5 @@ git.*.properties
 /.metadata/
 dump.rdb
 jssecacerts
+
+.portal-wrap
