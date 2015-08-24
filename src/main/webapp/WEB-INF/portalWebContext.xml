@@ -10,6 +10,7 @@
 
     <import resource="classpath:com/kii/extension/portal/portalContext.xml" />
 
+    <mvc:annotation-driven />
 
     <context:component-scan base-package="com.kii.extension.portal.web">
 
@@ -18,6 +19,7 @@
 
     </context:component-scan>
 
-    <mvc:annotation-driven />
-
+    <mvc:interceptors>
+        <bean class="com.kii.extension.portal.web.OptionalInterceptorAdapter" />
+    </mvc:interceptors>
 </beans>

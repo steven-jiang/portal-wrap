@@ -16,7 +16,8 @@ public class JettyServiceLoader {
 		String path="./src/main/webapp";
 		context.setDescriptor(path+"/WEB-INF/web.xml");
 		context.setResourceBase(path);
-		context.setParentLoaderPriority(true);
+
+//		context.setParentLoaderPriority(true);
 
 		server.setHandler(context);
 

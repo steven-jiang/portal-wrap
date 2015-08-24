@@ -40,7 +40,7 @@ public class AdminController {
 	private TokenManager tokenManager;
 
 
-	@RequestMapping(value="/{adminName}/password",method={RequestMethod.POST})
+	@RequestMapping(path="/{adminName}/password",method={RequestMethod.POST})
 	public ResponseEntity doSetAdminPwd(@RequestHeader("Authorization")  String header,@RequestBody String body,@PathVariable("adminName") String adminName ){
 
 
@@ -71,7 +71,7 @@ public class AdminController {
 
 
 
-	@RequestMapping(value="/appInfo/{appAlias}",method={RequestMethod.PUT})
+	@RequestMapping(path="/appInfo/{appAlias}",method={RequestMethod.PUT})
 	public ResponseEntity doSetAppInfo(@RequestHeader("Authorization")  String header,@RequestBody String body,@PathVariable("appAlias") String alias){
 
 
@@ -95,7 +95,7 @@ public class AdminController {
 	}
 
 
-	@RequestMapping(value="/appInfo/{appAlias}",method={RequestMethod.DELETE})
+	@RequestMapping(path="/appInfo/{appAlias}",method={RequestMethod.DELETE})
 	public ResponseEntity doDeleteAppInfo(@RequestHeader("Authorization")  String header,@PathVariable("appAlias") String alias) {
 		tokenManager.verifyToken(header);
 
@@ -105,7 +105,7 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value="/appInfo",method={RequestMethod.GET})
+	@RequestMapping(path="/appInfo",method={RequestMethod.GET})
 	public ResponseEntity doGetAppInfo(@RequestHeader("Authorization")  String header){
 
 

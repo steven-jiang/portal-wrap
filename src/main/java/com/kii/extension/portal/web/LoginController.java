@@ -33,7 +33,7 @@ public class LoginController {
 	private TokenManager tokenManager;
 
 
-	@RequestMapping(value="/oauth2/token",method={RequestMethod.POST})
+	@RequestMapping(path="/oauth2/token",method={RequestMethod.POST})
 	public ResponseEntity login(HttpEntity<String> entity){
 
 

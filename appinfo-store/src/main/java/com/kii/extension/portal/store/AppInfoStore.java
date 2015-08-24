@@ -59,14 +59,13 @@ public class AppInfoStore {
 	private ResourceLoader loader;
 
 
-	private String defaultCertPwd="DefaultPassword";
+	private String defaultCertPwd="ThisIsTheDefaultPwd";
 
 
 
 
 	@PostConstruct
 	public void init() throws IOException {
-
 
 		appInfoLocation=new File(System.getProperty("user.dir"),appInfoPath);
 

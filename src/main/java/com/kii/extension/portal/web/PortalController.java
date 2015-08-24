@@ -52,7 +52,7 @@ public class PortalController {
 	CloseableHttpClient httpClient = HttpClients.createDefault();
 
 
-	@RequestMapping(value="/apps/{appName}/**",method={RequestMethod.GET, RequestMethod.HEAD, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE})
+	@RequestMapping(path="/apps/{appName}/**",method={RequestMethod.GET, RequestMethod.HEAD, RequestMethod.POST, RequestMethod.PUT, RequestMethod.PATCH, RequestMethod.DELETE})
 	public ResponseEntity redirect(HttpServletRequest request,@PathVariable("appName") String appName){
 
 		tokenManager.verifyToken(request);

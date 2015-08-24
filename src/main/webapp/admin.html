@@ -50,7 +50,10 @@
 			    ajaxParam["data"]=JSON.stringify(data);
 		    }
 
-		    $.ajax("./api/"+url,ajaxParam);
+            var local="./api/";
+            local="http://localhost:8080/api-wrap-service/api/";
+
+		    $.ajax(local+url,ajaxParam);
 
 
         }
